@@ -1,89 +1,226 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FixSpark - Home Services</title>
-    <link rel="stylesheet" href="css/style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>FixSpark | Electrician & Plumbing Service Booking</title>
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
+  <!-- Navigation -->
+  <header class="navbar">
+    <div class="container nav-content">
+      <a href="#" class="logo">Fix<span>Spark</span></a>
+      <nav class="nav-links" id="navLinks">
+        <a href="#services">Services</a>
+        <a href="#bookings">My Bookings</a>
+        <a href="#how-it-works">How It Works</a>
+        <button class="btn btn-outline-light" id="openAuthBtn">Login / Register</button>
+      </nav>
+    </div>
+  </header>
 
-    <!-- Navbar -->
-    <nav class="navbar">
-        <h2 class="logo">FixSpark</h2>
+  <!-- Hero Section -->
+  <section class="hero">
+    <div class="container hero-grid">
+      <div>
+        <span class="badge">Verified Home Maintenance</span>
+        <h1>Book Trusted Electricians & Plumbers in Minutes</h1>
+        <p>
+          Schedule reliable electrical and plumbing visits with transparent estimated pricing,
+          live booking tracking, and instant assistance from the FixSpark AI chatbot.
+        </p>
+        <div class="hero-actions">
+          <a href="#services" class="btn btn-accent">Explore Services</a>
+          <button class="btn btn-outline-light" id="quickBookBtn">Book Now</button>
+        </div>
+      </div>
 
-        <div class="nav-links">
-            <a href="index.html">Home</a>
-            <a href="#services">Services</a>
-            <a href="#how-it-works">How It Works</a>
-            <a href="login.html">Login</a>
+      <div class="hero-media-card">
+        <img src="images/image2.jpeg" alt="Electrician inspecting home electrical panel" class="hero-img" />
+        <div class="hero-media-caption">
+          <strong>Same-Day & Scheduled Visits</strong>
+          <span>Electricians, plumbers, online payments & AI support in one place</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Featured Category Spotlight -->
+  <section class="section spotlight-section">
+    <div class="container spotlight-grid">
+      <div class="spotlight-card">
+        <img src="images/electrician.jpg" alt="Electrical repairs and installations" />
+        <div class="spotlight-body">
+          <span class="category-pill">Electrician</span>
+          <h3>Wiring, Switchboards, Fans & MCBs</h3>
+          <p>Safe troubleshooting, appliance fittings, and inverter wiring by skilled technicians.</p>
+        </div>
+      </div>
+      <div class="spotlight-card">
+        <img src="images/plumbur.jpg" alt="Plumbing repairs and faucet installation" />
+        <div class="spotlight-body">
+          <span class="category-pill">Plumbing</span>
+          <h3>Leaks, Drain Blockages & Fixtures</h3>
+          <p>Fast tap repairs, pipe leak fixes, sink unclogging, and bathroom fittings.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Services Module -->
+  <section id="services" class="section">
+    <div class="container">
+      <div class="section-header">
+        <div>
+          <h2>Available Services</h2>
+          <p class="subtitle">Select a service to view estimated charges and book an appointment</p>
+        </div>
+        <div class="filter-group">
+          <button class="filter-btn active" data-filter="all">All</button>
+          <button class="filter-btn" data-filter="electrician">Electrician</button>
+          <button class="filter-btn" data-filter="plumbing">Plumbing</button>
+        </div>
+      </div>
+
+      <div class="services-grid" id="servicesGrid">
+        <!-- Populated by script.js -->
+      </div>
+    </div>
+  </section>
+
+  <!-- Booking & Payment Status Module -->
+  <section id="bookings" class="section section-tint">
+    <div class="container">
+      <div class="section-header">
+        <div>
+          <h2>Recent Bookings & Payment Status</h2>
+          <p class="subtitle">Track appointment status, complete online payment, and download receipts</p>
+        </div>
+      </div>
+      <div class="table-wrapper">
+        <table>
+          <thead>
+            <tr>
+              <th>Booking ID</th>
+              <th>Service</th>
+              <th>Date & Time</th>
+              <th>Est. Cost</th>
+              <th>Booking Status</th>
+              <th>Payment</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody id="bookingsTableBody">
+            <!-- Populated by script.js -->
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- How It Works -->
+  <section id="how-it-works" class="section">
+    <div class="container">
+      <h2 class="center-title">How FixSpark Works</h2>
+      <div class="steps-grid">
+        <div class="step-card">
+          <span class="step-num">01</span>
+          <h3>Choose Your Service</h3>
+          <p>Pick an electrician or plumbing task and check the estimated price upfront.</p>
+        </div>
+        <div class="step-card">
+          <span class="step-num">02</span>
+          <h3>Book Date & Address</h3>
+          <p>Enter your problem details, address, and preferred visit time in seconds.</p>
+        </div>
+        <div class="step-card">
+          <span class="step-num">03</span>
+          <h3>Track, Pay & Get Receipt</h3>
+          <p>Follow status updates, pay securely online, and save your payment receipt.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Booking Modal -->
+  <div class="modal" id="bookingModal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3>Book Service</h3>
+        <button class="close-btn" id="closeBookingModal">&times;</button>
+      </div>
+      <form id="bookingForm">
+        <label>Service</label>
+        <select id="bookingServiceSelect" required></select>
+
+        <label>Problem Description</label>
+        <textarea id="problemDesc" rows="3" placeholder="Describe the issue..." required></textarea>
+
+        <label>Service Address</label>
+        <input type="text" id="serviceAddress" placeholder="House/Flat No, Street, Area" required />
+
+        <div class="form-row">
+          <div>
+            <label>Preferred Date</label>
+            <input type="date" id="serviceDate" required />
+          </div>
+          <div>
+            <label>Preferred Time</label>
+            <input type="time" id="serviceTime" required />
+          </div>
         </div>
 
-        <a href="signup.html" class="nav-btn">Get Started</a>
-    </nav>
+        <button type="submit" class="btn btn-navy full-width">Confirm Booking</button>
+      </form>
+    </div>
+  </div>
 
-    <!-- Hero Section -->
-    <section class="hero">
-        <div class="hero-content">
-            <h1>Reliable Home Services<br>
-                At Your Fingertips
-            </h1>
+  <!-- Role Login / Register Modal -->
+  <div class="modal" id="authModal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3>FixSpark Account Access</h3>
+        <button class="close-btn" id="closeAuthModal">&times;</button>
+      </div>
+      <form id="authForm">
+        <label>Role</label>
+        <select id="userRole">
+          <option value="Customer">Customer</option>
+          <option value="Service Provider">Service Provider (Electrician / Plumber)</option>
+          <option value="Administrator">Administrator</option>
+        </select>
 
-            <p>
-                Find trusted electricians and plumbers
-                for your home. Book a service easily
-                with FixSpark.
-            </p>
+        <label>Email</label>
+        <input type="email" placeholder="you@example.com" required />
 
-            <a href="#services" class="main-btn">
-                Explore Services
-            </a>
-        </div>
-    </section>
+        <label>Password</label>
+        <input type="password" placeholder="Enter password" required />
 
-    <!-- Services -->
-    <section class="services" id="services">
-        <h2>Our Services</h2>
-        <p>Choose the service you need</p>
+        <button type="submit" class="btn btn-navy full-width">Continue</button>
+      </form>
+    </div>
+  </div>
 
-        <div class="service-container">
+  <!-- Floating AI Chatbot Widget -->
+  <button class="chatbot-toggle" id="chatbotToggle">AI Assistant</button>
+  <div class="chatbot-box" id="chatbotBox">
+    <div class="chatbot-header">
+      <span>FixSpark AI Assistant</span>
+      <button id="closeChatbot">&times;</button>
+    </div>
+    <div class="chatbot-messages" id="chatMessages">
+      <div class="msg bot">
+        Hello! Ask me about electrician or plumbing prices, booking steps, or payments.
+      </div>
+    </div>
+    <form class="chatbot-input" id="chatForm">
+      <input type="text" id="chatInput" placeholder="Type your question..." required />
+      <button type="submit">Send</button>
+    </form>
+  </div>
 
-            <div class="service-card">
-                <h3>Electrician</h3>
-                <p>Professional electrical repair
-                and maintenance services.</p>
-                <button>Book Now</button>
-            </div>
-
-            <div class="service-card">
-                <h3>Plumbing</h3>
-                <p>Reliable plumbing repair
-                and maintenance services.</p>
-                <button>Book Now</button>
-            </div>
-
-        </div>
-    </section>
-
-    <!-- How It Works -->
-    <section class="how-it-works" id="how-it-works">
-        <h2>How FixSpark Works</h2>
-        <p>Book your home service in three simple steps.</p>
-
-        <div class="steps">
-            <div>1. Choose a Service</div>
-            <div>2. Book a Professional</div>
-            <div>3. Get Your Service Done</div>
-        </div>
-    </section>
-
-    <!-- Footer -->
-    <footer>
-        <h2>FixSpark</h2>
-        <p>Your Trusted Home Service Partner</p>
-        <p>© 2026 FixSpark. All Rights Reserved.</p>
-    </footer>
-
+  <script src="script.js"></script>
 </body>
 </html>
 <link rel="stylesheet" href="css/style.css">
