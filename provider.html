@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>FixSpark | Service Provider Dashboard</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header class="navbar">
+    <div class="container nav-content">
+      <a href="index.html" class="logo">Fix<span>Spark</span></a>
+      <nav class="nav-links">
+        <a href="index.html">Home</a>
+        <a href="provider.html">Provider View</a>
+        <a href="admin.html">Admin View</a>
+        <a href="profile.html">My Profile</a>
+      </nav>
+    </div>
+  </header>
+
+  <section class="hero" style="padding: 2.5rem 0;">
+    <div class="container">
+      <span class="badge">Service Provider Portal</span>
+      <h1>Electrician & Plumbing Partner Dashboard</h1>
+      <p>Manage incoming customer booking requests, update your service rates, and track earnings.</p>
+    </div>
+  </section>
+
+  <!-- Summary Cards -->
+  <section class="section" style="padding-bottom: 1rem;">
+    <div class="container steps-grid">
+      <div class="step-card">
+        <span class="step-num">Assigned Category</span>
+        <h3>Electrician Services</h3>
+        <p>Verified technician profile active for residential bookings.</p>
+      </div>
+      <div class="step-card">
+        <span class="step-num">Completed Jobs</span>
+        <h3 id="completedCount">14 Bookings</h3>
+        <p>Updated automatically when you mark a booking completed.</p>
+      </div>
+      <div class="step-card">
+        <span class="step-num">Total Earnings</span>
+        <h3 id="earningsTotal">₹4,850</h3>
+        <p>Includes paid online transactions for completed services.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Incoming Booking Requests -->
+  <section class="section">
+    <div class="container">
+      <div class="section-header">
+        <div>
+          <h2>Received Booking Requests</h2>
+          <p class="subtitle">Inspect customer problem details, accept or reject requests, and mark jobs completed</p>
+        </div>
+      </div>
+
+      <div class="table-wrapper">
+        <table>
+          <thead>
+            <tr>
+              <th>Booking ID</th>
+              <th>Customer & Address</th>
+              <th>Problem Description</th>
+              <th>Schedule</th>
+              <th>Payment</th>
+              <th>Status</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="providerBookingsBody"></tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- Update Service Description & Charges -->
+  <section class="section section-tint">
+    <div class="container" style="max-width: 680px;">
+      <div class="section-header">
+        <div>
+          <h2>Update Service Description & Charges</h2>
+          <p class="subtitle">Modify your assigned service details and estimated pricing</p>
+        </div>
+      </div>
+
+      <div class="modal-content" style="max-width: 100%; box-shadow: none;">
+        <form id="providerServiceForm">
+          <label>Service Title</label>
+          <input type="text" id="provServiceTitle" value="Switchboard & Socket Repair" required />
+
+          <label>Service Description</label>
+          <textarea id="provServiceDesc" rows="3" required>Repair or replacement of damaged switches, sockets, and internal wiring.</textarea>
+
+          <label>Estimated Charge (₹)</label>
+          <input type="number" id="provServicePrice" value="299" min="50" required />
+
+          <button type="submit" class="btn btn-navy full-width">Save Service Changes</button>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <script>
+    let providerRequests = [
+      {
+        id: "FS-101",
+        customer: "Rohan Sharma — Flat 402, Kothrud, Pune",
+        problem: "Main hall switchboard sparking and two sockets not working.",
+        schedule: "2026-11-24 | 10:30",
+        payment: "Paid",
+        status: "Pending"
+      },
+      {
+        id: "FS-102",
+        customer: "Sneha Patil — B-12, Sinhgad Road, Pune",
+        problem: "Ceiling fan regulator replacement and bedroom LED tube fitting.",
+        schedule: "2026-11-24 | 14:00",
+        payment: "Unpaid",
+        status: "Accepted"
+      }
+    ];
+
+    function renderProviderRequests() {
+      const tbody = document.getElementById("providerBookingsBody");
+      tbody.innerHTML = providerRequests.map((req, idx) => `
+        <tr>
+          <td><strong>${req.id}</strong></td>
+          <td>${req.customer}</td>
+          <td>${req.problem}</td>
+          <td>${req.schedule}</td>
+          <td><span class="status-pill ${req.payment === "Paid" ? "status-paid" : "status-pending"}">${req.payment}</span></td>
+          <td><span class="status-pill ${req.status === "Completed" ? "status-paid" : "status-pending"}">${req.status}</span></td>
+          <td style="display:flex; gap:0.4rem; flex-wrap:wrap;">
+            ${req.status === "Pending" ? `
+              <button class="btn btn-navy" onclick="updateReq(${idx}, 'Accepted')">Accept</button>
+              <button class="btn btn-outline-navy" onclick="updateReq(${idx}, 'Rejected')">Reject</button>
+            ` : ""}
+            ${req.status === "Accepted" ? `
+              <button class="btn btn-accent" onclick="updateReq(${idx}, 'Completed')">Mark Completed</button>
+            ` : ""}
+            ${(req.status === "Completed" || req.status === "Rejected") ? `<span class="subtitle">No action</span>` : ""}
+          </td>
+        </tr>
+      `).join("");
+    }
+
+    function updateReq(index, newStatus) {
+      providerRequests[index].status = newStatus;
+      renderProviderRequests();
+    }
+
+    document.getElementById("providerServiceForm").addEventListener("submit", (e) => {
+      e.preventDefault();
+      alert("Service description and charges updated! (Ready to connect to Django Service model)");
+    });
+
+    renderProviderRequests();
+  </script>
+</body>
+</html>
+<link rel="stylesheet" href="css/style.css">

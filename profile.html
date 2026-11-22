@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>FixSpark | My Profile</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header class="navbar">
+    <div class="container nav-content">
+      <a href="index.html" class="logo">Fix<span>Spark</span></a>
+      <nav class="nav-links">
+        <a href="index.html">Home</a>
+        <a href="provider.html">Provider View</a>
+        <a href="admin.html">Admin View</a>
+        <a href="profile.html">My Profile</a>
+      </nav>
+    </div>
+  </header>
+
+  <section class="section">
+    <div class="container" style="max-width: 620px;">
+      <div class="section-header">
+        <div>
+          <h2>User Profile Management</h2>
+          <p class="subtitle">View and update your FixSpark account information</p>
+        </div>
+      </div>
+
+      <div class="modal-content" style="max-width: 100%; box-shadow: 0 6px 20px rgba(10,37,64,0.06);">
+        <form id="profileForm">
+          <label>Account Role</label>
+          <select id="profileRole">
+            <option value="Customer">Customer</option>
+            <option value="Service Provider">Service Provider</option>
+            <option value="Administrator">Administrator</option>
+          </select>
+
+          <label>Full Name</label>
+          <input type="text" value="Kalash Yadav" required />
+
+          <label>Email Address</label>
+          <input type="email" value="kalash@example.com" required />
+
+          <label>Phone Number</label>
+          <input type="tel" value="+91 9876543210" required />
+
+          <label>Default Address / Service Area</label>
+          <textarea rows="2" required>Pune, Maharashtra - 411041</textarea>
+
+          <button type="submit" class="btn btn-navy full-width">Update Profile</button>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <script>
+    document.getElementById("profileForm").addEventListener("submit", e => {
+      e.preventDefault();
+      alert("Profile updated successfully!");
+    });
+  </script>
+</body>
+</html>
+<link rel="stylesheet" href="css/style.css">

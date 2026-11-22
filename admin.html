@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>FixSpark | Administrator Dashboard</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header class="navbar">
+    <div class="container nav-content">
+      <a href="index.html" class="logo">Fix<span>Spark</span></a>
+      <nav class="nav-links">
+        <a href="index.html">Home</a>
+        <a href="provider.html">Provider View</a>
+        <a href="admin.html">Admin View</a>
+        <a href="profile.html">My Profile</a>
+      </nav>
+    </div>
+  </header>
+
+  <section class="hero" style="padding: 2.5rem 0;">
+    <div class="container">
+      <span class="badge">Administrator Control Panel</span>
+      <h1>Platform Management & Oversight</h1>
+      <p>Manage services, user accounts, bookings, payment refunds, and AI chatbot FAQs.</p>
+    </div>
+  </section>
+
+  <!-- 1. Manage Services -->
+  <section class="section">
+    <div class="container">
+      <div class="section-header">
+        <div>
+          <h2>1. Service Catalog Management</h2>
+          <p class="subtitle">Add or update electrician and plumbing services and base prices</p>
+        </div>
+      </div>
+
+      <form id="adminAddServiceForm" class="form-row" style="grid-template-columns: 1fr 2fr 1fr auto; align-items: end; margin-bottom: 1.5rem;">
+        <div>
+          <label>Category</label>
+          <select id="adminCat">
+            <option value="Electrician">Electrician</option>
+            <option value="Plumbing">Plumbing</option>
+          </select>
+        </div>
+        <div>
+          <label>Service Name</label>
+          <input type="text" id="adminSrvName" placeholder="e.g., Water Heater Installation" required />
+        </div>
+        <div>
+          <label>Price (₹)</label>
+          <input type="number" id="adminSrvPrice" placeholder="499" required />
+        </div>
+        <button type="submit" class="btn btn-navy">Add Service</button>
+      </form>
+
+      <div class="table-wrapper">
+        <table>
+          <thead>
+            <tr>
+              <th>Category</th>
+              <th>Service Name</th>
+              <th>Estimated Price</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody id="adminServicesBody"></tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- 2. Bookings & Refund Management -->
+  <section class="section section-tint">
+    <div class="container">
+      <div class="section-header">
+        <div>
+          <h2>2. All Bookings & Refund Requests</h2>
+          <p class="subtitle">Monitor booking status, payment records, and issue policy refunds</p>
+        </div>
+      </div>
+
+      <div class="table-wrapper">
+        <table>
+          <thead>
+            <tr>
+              <th>Booking ID</th>
+              <th>Customer</th>
+              <th>Service</th>
+              <th>Amount</th>
+              <th>Booking Status</th>
+              <th>Payment Status</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody id="adminBookingsBody"></tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3. User Profiles & 4. Chatbot FAQs -->
+  <section class="section">
+    <div class="container spotlight-grid">
+      <div>
+        <h2 style="color:var(--navy); margin-bottom:0.8rem;">3. Registered Users</h2>
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Role</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Rohan Sharma</td>
+                <td>Customer</td>
+                <td><span class="status-pill status-paid">Active</span></td>
+              </tr>
+              <tr>
+                <td>Amit Kulkarni</td>
+                <td>Service Provider (Electrician)</td>
+                <td><span class="status-pill status-paid">Verified</span></td>
+              </tr>
+              <tr>
+                <td>Nilesh Jadhav</td>
+                <td>Service Provider (Plumber)</td>
+                <td><span class="status-pill status-paid">Verified</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div>
+        <h2 style="color:var(--navy); margin-bottom:0.8rem;">4. Chatbot AI FAQs</h2>
+        <form id="faqForm" style="margin-bottom: 1rem;">
+          <label>Question Keyword / Prompt</label>
+          <input type="text" id="faqQ" placeholder="e.g., Cancellation policy" required />
+          <label>Chatbot Answer</label>
+          <input type="text" id="faqA" placeholder="e.g., Free cancellation up to 2 hours before visit." required />
+          <button type="submit" class="btn btn-accent full-width">Add FAQ Response</button>
+        </form>
+        <div id="faqList" style="display:grid; gap:0.5rem;"></div>
+      </div>
+    </div>
+  </section>
+
+  <script>
+    let adminServices = [
+      { cat: "Electrician", name: "Switchboard & Socket Repair", price: 299 },
+      { cat: "Plumbing", name: "Tap & Pipe Leak Repair", price: 249 }
+    ];
+
+    let adminBookings = [
+      { id: "FS-101", customer: "Rohan Sharma", service: "Switchboard & Socket Repair", amount: 299, status: "Confirmed", pay: "Paid" },
+      { id: "FS-103", customer: "Priya Deshmukh", service: "Tap & Pipe Leak Repair", amount: 249, status: "Cancelled", pay: "Refund Requested" }
+    ];
+
+    let faqs = [
+      { q: "Cancellation Policy", a: "Bookings can be cancelled up to 2 hours before the scheduled slot." },
+      { q: "Service Hours", a: "Electricians and plumbers are available from 8:00 AM to 8:00 PM." }
+    ];
+
+    function renderAdminServices() {
+      document.getElementById("adminServicesBody").innerHTML = adminServices.map((s, i) => `
+        <tr>
+          <td>${s.cat}</td>
+          <td>${s.name}</td>
+          <td>₹${s.price}</td>
+          <td><button class="btn btn-outline-navy" onclick="adminServices.splice(${i},1); renderAdminServices();">Remove</button></td>
+        </tr>
+      `).join("");
+    }
+
+    function renderAdminBookings() {
+      document.getElementById("adminBookingsBody").innerHTML = adminBookings.map((b, i) => `
+        <tr>
+          <td><strong>${b.id}</strong></td>
+          <td>${b.customer}</td>
+          <td>${b.service}</td>
+          <td>₹${b.amount}</td>
+          <td><span class="status-pill status-pending">${b.status}</span></td>
+          <td><span class="status-pill ${b.pay === "Paid" || b.pay === "Refunded" ? "status-paid" : "status-pending"}">${b.pay}</span></td>
+          <td>
+            ${b.pay === "Refund Requested"
+              ? `<button class="btn btn-accent" onclick="adminBookings[${i}].pay='Refunded'; renderAdminBookings();">Approve Refund</button>`
+              : `<button class="btn btn-outline-navy" onclick="alert('Receipt generated for ${b.id}')">Receipt</button>`}
+          </td>
+        </tr>
+      `).join("");
+    }
+
+    function renderFaqs() {
+      document.getElementById("faqList").innerHTML = faqs.map(f => `
+        <div class="step-card" style="padding:0.85rem;">
+          <strong>${f.q}</strong>
+          <p>${f.a}</p>
+        </div>
+      `).join("");
+    }
+
+    document.getElementById("adminAddServiceForm").addEventListener("submit", e => {
+      e.preventDefault();
+      adminServices.push({
+        cat: document.getElementById("adminCat").value,
+        name: document.getElementById("adminSrvName").value,
+        price: document.getElementById("adminSrvPrice").value
+      });
+      renderAdminServices();
+      e.target.reset();
+    });
+
+    document.getElementById("faqForm").addEventListener("submit", e => {
+      e.preventDefault();
+      faqs.unshift({
+        q: document.getElementById("faqQ").value,
+        a: document.getElementById("faqA").value
+      });
+      renderFaqs();
+      e.target.reset();
+    });
+
+    renderAdminServices();
+    renderAdminBookings();
+    renderFaqs();
+  </script>
+</body>
+</html>
+<link rel="stylesheet" href="css/style.css">
